@@ -20,3 +20,7 @@ npm i -D nodemon
 - git add .
 - git commit -m "Initial project commit"
 - git push -u origin main
+
+<!-- Auto commit -->
+
+run .\auto-commit.bat
