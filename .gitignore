@@ -1,0 +1,159 @@
+# =========================
+#  Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+#  Environment files
+# =========================
+.env
+.env.*
+.env.*.local
+backend/.env
+frontend/.env
+
+# =========================
+#  Build outputs
+# =========================
+dist/
+build/
+out/
+
+# Vite
+.vite/
+
+# Next.js
+.next/
+.vercel/
+
+# React Native (nếu dùng)
+.expo/
+.expo-shared/
+
+# =========================
+#  Logs
+# =========================
+logs/
+*.log
+*.log.*
+debug.log
+error.log
+*.pid
+*.seed
+*.pid.lock
+
+# =========================
+#  OS generated files
+# =========================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.Trash-*
+
+# =========================
+#  IDE / Editor
+# =========================
+
+# VSCode
+.vscode/
+.history/
+*.code-workspace
+
+# JetBrains (WebStorm, IntelliJ)
+.idea/
+*.iml
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# =========================
+#  Package managers
+# =========================
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Nếu bạn muốn giữ lock file thì xoá phần này.
+
+# =========================
+#  TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+#  Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+*.temp
+
+# =========================
+#  Cache
+# =========================
+.cache/
+.eslintcache
+.stylelintcache
+.npm/
+.yarn/
+.pnp/
+.pnp.js
+
+# =========================
+#  Testing
+# =========================
+coverage/
+nyc_output/
+.jest/
+jest-cache/
+jest-html-reporters-*
+
+# =========================
+#  Backend frameworks
+# =========================
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# NestJS
+*.swp
+
+# Express
+uploads/
+
+# =========================
+#  Frontend frameworks
+# =========================
+
+# React / Vue
+*.local
+.sass-cache
+.cache-loader
+node_modules/
+
+# Angular
+.angular/
+
+# =========================
+#  Docker
+# =========================
+docker-data/
+docker-compose.override.yml
