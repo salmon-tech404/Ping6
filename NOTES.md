@@ -10,8 +10,10 @@ npm i express cors mongoose dotenv
 
 npm i -D nodemon
 
-<!-- Push code to Git -->
+<!-- Permission Github Repo -->
 
+- Add permission to account (SALMON2289)
+<!-- push code -->
 - git init
 - git remote add origin ~git path~
 - git remote -v
