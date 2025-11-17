@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./libs/db.js";
 import authRoute from "./routes/authRoute.js";
+import userRoute from "./routes/userRoute.js";
+import { verifyAccessToken } from "./middlewares/authMiddleware.js";
 
 // load env libs
 dotenv.config();
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 
 // Private routes
+app.use(verifyAccessToken);
+app.use("/api/users", userRoute);
 
 // Connect to DB
 connectDB().then(() => {
