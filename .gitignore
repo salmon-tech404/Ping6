@@ -1,5 +1,9 @@
 # =========================
 #  Node.js
+forgotPassword/
+login/
+signup/
+social/
 # =========================
 node_modules/
 npm-debug.log*

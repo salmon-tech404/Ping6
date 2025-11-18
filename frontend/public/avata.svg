@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 250 250" style="enable-background:new 0 0 250 250;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#3BB77E;}
+	.st1{fill:#495057;}
+	.st2{font-family:'VNF-IntroInlineFat';}
+	.st3{font-size:48px;}
+</style>
+<image style="display:none;overflow:visible;" width="500" height="500" xlink:href="avata.png"  transform="matrix(1 0 0 1 -125 -125)">
+</image>
+<circle class="st0" cx="37.5" cy="76.2" r="4.3"/>
+<circle class="st0" cx="56.4" cy="54.3" r="4.7"/>
+<circle class="st0" cx="84.6" cy="37.2" r="8.4"/>
+<circle class="st0" cx="114.8" cy="30.5" r="8.9"/>
+<circle class="st0" cx="147.3" cy="34" r="9.1"/>
+<circle class="st0" cx="180.8" cy="49.5" r="9.1"/>
+<circle class="st0" cx="206" cy="76.2" r="9.1"/>
+<circle class="st0" cx="211.7" cy="172" r="4.3"/>
+<circle class="st0" cx="192.9" cy="193.9" r="4.7"/>
+<circle class="st0" cx="164.7" cy="211" r="8.4"/>
+<circle class="st0" cx="134.5" cy="217.7" r="8.9"/>
+<circle class="st0" cx="102" cy="214.2" r="9.1"/>
+<circle class="st0" cx="68.4" cy="198.7" r="9.1"/>
+<circle class="st0" cx="43.3" cy="172" r="9.1"/>
+<text transform="matrix(1 0 0 1 39.8045 139.4141)" class="st1 st2 st3">PING 6</text>
+</svg>

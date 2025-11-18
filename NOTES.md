@@ -94,4 +94,14 @@ npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-
 
 <!-- giúp typescript hiểu được kiểu dữ liệu nodejs -->
 
-npm i -D @types/node
+- npm i -D @types/node
+
+<!-- cài tailwind -->
+
+- npm install -D tailwindcss
+- npx tailwindcss-cli@latest init
+  <!-- Xóa và cài lại TailWind -->
+- npm uninstall tailwindcss
+- npm install tailwindcss@next
+
+npm run dev:frontend
