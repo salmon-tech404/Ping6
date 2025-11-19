@@ -1,39 +1,66 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Field, FieldSeparator } from "@/components/ui/field";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent } from "@/components/ui/card";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
+// import { Field, FieldSeparator } from "@/components/ui/field";
+// import { Button } from "@/components/ui/button";
 
-const signUpSchema = Z.object({
+const signUpSchema = z.object({
   firstname: z.string().min(1, "Tên bắt buộc phải có"),
   lastname: z.string().min(1, "Họ bắt buộc phải có"),
   username: z.string().min(3, "Tên đăng nhập phải có ít nhất 3 ký tự"),
-  email: z.email().min(1, "Email không hợp lệ"),
-  password: z
-    .string()
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^]).{8,}$/,
-      "Mật khẩu không hợp lệ"
-    ),
+  email: z.email("Vui lòng nhập đúng định dạng email"),
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  // password: z
+  //   .string()
+  //   .regex(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^]).{8,}$/,
+  //     "Mật khẩu không hợp lệ"
+  //   ),
 });
 
-// Lấy kiểu "signUpSchema" để suy ra kiểu của SignUpFormValue
+// Ý nghĩa: Hãy tạo ra kiểu dữ liệu "SignUpFormValue" dựa trên bộ dữ liệu yêu cầu "signUpSchema"
 type SignUpFormValue = z.infer<typeof signUpSchema>;
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signUp } = useAuthStore();
+  const navigate = useNavigate();
+  // Khai báo xử lý form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpFormValue>({
+    resolver: zodResolver(signUpSchema),
+  });
+
+  // onSubmit
+  const onSubmit = async (data: SignUpFormValue) => {
+    const { firstname, lastname, username, email, password } = data;
+
+    // gọi backend xử lý signup
+    await signUp(username, password, email, firstname, lastname);
+
+    // chuyển hương trang
+    navigate("/signin");
+  };
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-8", className)} {...props}>
       {/* colume 1 */}
-      <Card className='overflow-hidden p-0 border-border'>
+      <Card className='overflow-hidden p-0 border-border '>
         <CardContent className='grid p-0 md:grid-cols-2'>
-          <form className='p-6 md:p-8'>
+          <form className='p-6 md:p-8' onSubmit={handleSubmit(onSubmit)}>
             <div className='flex flex-col gap-6'>
               {/* header - logo */}
-              <div className='flex flex-col items-center text-center gap-2'>
+              <div className='flex flex-col items-center text-center gap-6 mb-4'>
                 <a href='/' className='mx-auto block w-fit text-center'>
                   <img
                     className='w-56'
@@ -48,22 +75,40 @@ export function SignupForm({
                 </p>
               </div>
 
-              {/* họ và tên */}
+              {/* họ */}
               <div className='grid grid-cols-2 gap-3'>
                 <div className='space-y-2'>
                   <label htmlFor='lastname' className='block text-sm'>
                     Họ
                   </label>
-                  <Input type='text' id='lastname' />
+                  <Input type='text' id='lastname' {...register("lastname")} />
+                  <div className='h-2'>
+                    {errors.lastname && (
+                      <p className='text-destructive text-sm'>
+                        {errors.lastname.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                {/* Error message */}
+
+                {/* tên */}
                 <div className='space-y-2'>
                   <label htmlFor='firstname' className='block text-sm'>
                     Tên
                   </label>
-                  <Input type='text' id='firstname' />
+                  <Input
+                    type='text'
+                    id='firstname'
+                    {...register("firstname")}
+                  />
+                  <div className='h-2'>
+                    {errors.firstname && (
+                      <p className='text-destructive text-sm'>
+                        {errors.firstname.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                {/* Error message */}
               </div>
 
               {/* user name */}
@@ -71,8 +116,19 @@ export function SignupForm({
                 <label htmlFor='username' className='block text-sm'>
                   Tên đăng nhập
                 </label>
-                <Input type='text' id='username' placeholder='Ping06' />
-                {/* Error message */}
+                <Input
+                  type='text'
+                  id='username'
+                  placeholder='Ping06'
+                  {...register("username")}
+                />
+                <div className='h-2'>
+                  {errors.username && (
+                    <p className='text-destructive text-sm'>
+                      {errors.username.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* email */}
@@ -80,8 +136,19 @@ export function SignupForm({
                 <label htmlFor='email' className='block text-sm'>
                   Email
                 </label>
-                <Input type='text' id='email' placeholder='ping06@gmail.com' />
-                {/* Error message */}
+                <Input
+                  type='text'
+                  id='email'
+                  placeholder='ping06@gmail.com'
+                  {...register("email")}
+                />
+                <div className='h-2'>
+                  {errors.email && (
+                    <p className='text-destructive text-sm'>
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* password */}
@@ -92,20 +159,27 @@ export function SignupForm({
                 <Input
                   type='password'
                   id='password'
-                  placeholder='Ping06^12%3'
+                  placeholder='**********'
+                  {...register("password")}
                 />
                 <p className='text-sm italic'>
                   Mật khẩu phải nhập tối thiểu 8 ký tự, bao gồm chữ hoa, chữ
                   thường và ký tự đặc biệt @#$%^
                 </p>
-                {/* Error message */}
+                <div className='h-2'>
+                  {errors.password && (
+                    <p className='text-destructive text-sm'>
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* nút đăng ký */}
-              <button className='w-full' type='submit'>
+              <button className='w-full' type='submit' disabled={isSubmitting}>
                 Tạo Tài Khoản
               </button>
-              <FieldSeparator className='*:data-[slot=field-separator-content]:bg-card'>
+              {/* <FieldSeparator className='*:data-[slot=field-separator-content]:bg-card'>
                 Hoặc tiếp tục với
               </FieldSeparator>
               <Field className='grid grid-cols-3 gap-4'>
@@ -136,17 +210,18 @@ export function SignupForm({
                   </svg>
                   <span className='sr-only'>Đăng ký với Meta</span>
                 </Button>
-              </Field>
+              </Field> */}
 
               <div className='text-center text-sm'>
                 Bạn đã có tài khoản? Click{" "}
                 <a href='/signin' className='underline underline-offset-4'>
                   vào đây
                 </a>{" "}
-                để đăng nhập
+                để đăng nhập.
               </div>
             </div>
           </form>
+          {/* image right */}
           <div className='bg-muted relative hidden md:block'>
             <img
               src='../src/assets/Login-displaying.png'

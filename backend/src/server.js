@@ -4,11 +4,20 @@ import connectDB from "./libs/db.js";
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import { verifyAccessToken } from "./middlewares/authMiddleware.js";
+import cors from "cors";
 
 // load env libs
 dotenv.config();
 
 const app = express();
+
+// Đặt CORS
+app.use(
+  cors({
+    origin: process.env.CLENT_URL,
+    credentials: true,
+  })
+);
 
 // Lấy giá trị SERVER_PORT từ biến môi trường
 const SERVER_PORT = process.env.SERVER_PORT;
