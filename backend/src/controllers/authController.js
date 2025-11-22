@@ -109,17 +109,6 @@ export const signIn = async (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
-/* 
-
-SignIn Process Flow:
-- Kiểm tra input → nếu sai → return ngay
-- Tìm user → nếu không có → return
-- Check password → nếu sai → return
-- Nếu tất cả đều qua → tạo token
-- Lưu session
-- Trả token 
-
-*/
 
 // SignOut AuthProcess
 export const signOut = async (req, res) => {
@@ -143,3 +132,32 @@ export const signOut = async (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
+
+export const refereshToken = async (req, res) => {
+  try {
+    // lấy refreshToken từ cookie
+    const token = req.cookie?.refereshToken;
+    if (!token) {
+      return res.status(401).json({ message: "Token không tồn tại!" });
+    }
+
+    // So sánh refreshToken trong DB
+    const session = await Session.findOne({ refreshToken: token });
+    if (!session) {
+      return res
+        .status(403)
+        .json({ message: "Token không hợp lệ hoặc hết hạn!" });
+    }
+  } catch (error) {}
+};
+/* 
+
+SignIn Process Flow:
+- Kiểm tra input → nếu sai → return ngay
+- Tìm user → nếu không có → return
+- Check password → nếu sai → return
+- Nếu tất cả đều qua → tạo token
+- Lưu session
+- Trả token 
+
+*/

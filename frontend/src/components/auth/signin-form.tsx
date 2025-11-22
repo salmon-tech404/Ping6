@@ -1,54 +1,55 @@
 import { cn } from "@/lib/utils";
-// import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-// import { Field, FieldSeparator } from "@/components/ui/field";
 import { Input } from "../ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
+// import { Field, FieldSeparator } from "@/components/ui/field";
+// import { Button } from "@/components/ui/button";
 
-const signUpSchema = z.object({
-  firstname: z.string().min(1, "Tên bắt buộc phải có"),
-  lastname: z.string().min(1, "Họ bắt buộc phải có"),
-  username: z.string().min(3, "Tên đăng nhập phải có ít nhất 3 ký tự"),
-  email: z.string().email("Vui lòng nhập đúng định dạng email"),
-  password: z
-    .string()
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^]).{8,}$/,
-      "Mật khẩu không hợp lệ"
-    ),
+const signInSchema = z.object({
+  username: z.string().min(3, "Vui lòng nhập tên đăng nhập"),
+  password: z.string().min(6, "Vui lòng nhập mật khẩu"),
 });
 
-// Ý nghĩa: Hãy tạo ra kiểu dữ liệu "SignUpFormValue" dựa trên bộ dữ liệu yêu cầu "signUpSchema"
-type SignUpFormValue = z.infer<typeof signUpSchema>;
+type SignInFormValue = z.infer<typeof signInSchema>;
 
 export function SigninForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signIn } = useAuthStore();
+  const navigate = useNavigate();
   // Khai báo xử lý form
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormValue>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignInFormValue>({
+    resolver: zodResolver(signInSchema),
   });
 
   // onSubmit
-  const onSubmit = async (data: SignUpFormValue) => {
-    // gọi backend xử lý signup
+  const onSubmit = async (data: SignInFormValue) => {
+    const { username, password } = data;
+    // gọi backend xử lý signin
+
+    await signIn(username, password);
+
+    // navigate
+    navigate("/");
   };
 
   // -----------------------
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
       {/* colume 1 */}
-      <Card className='overflow-hidden p-0 border-border h-[650px] '>
+      <Card className='overflow-hidden p-0 border-border h-[720px] '>
         <CardContent className='grid p-0 md:grid-cols-2 h-full'>
           <form className='p-6 md:p-8' onSubmit={handleSubmit(onSubmit)}>
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-6'>
               {/* header - logo */}
               <div className='flex flex-col items-center text-center gap-6 mb-4'>
                 <a href='/' className='mx-auto block w-fit text-center'>
@@ -97,17 +98,17 @@ export function SigninForm({
                   placeholder='**********'
                   {...register("password")}
                 />
+                <div className='h-2'>
+                  {errors.password && (
+                    <p className='text-destructive text-sm'>
+                      {errors.password?.message || ""}
+                    </p>
+                  )}
+                </div>
                 <p className='text-sm italic'>
                   Chú ý: mật khẩu bao gồm chữ hoa, chữ thường và ký tự đặc biệt
                   @#$%^
                 </p>
-                <div className='h-2'>
-                  {errors.password && (
-                    <p className='text-destructive text-sm'>
-                      {errors.username?.message || ""}
-                    </p>
-                  )}
-                </div>
               </div>
 
               {/* nút đăng ký */}

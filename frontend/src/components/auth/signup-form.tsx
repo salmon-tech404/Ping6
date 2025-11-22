@@ -48,17 +48,17 @@ export function SignupForm({
     // gọi backend xử lý signup
     await signUp(username, password, email, firstname, lastname);
 
-    // chuyển hương trang
+    // chuyển hướng trang
     navigate("/signin");
   };
 
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
       {/* colume 1 */}
-      <Card className='overflow-hidden p-0 border-border '>
-        <CardContent className='grid p-0 md:grid-cols-2'>
+      <Card className='overflow-hidden p-0 border-border'>
+        <CardContent className='grid p-0 md:grid-cols-2 max-h-[720px]'>
           <form className='p-6 md:p-8' onSubmit={handleSubmit(onSubmit)}>
-            <div className='flex flex-col gap-6'>
+            <div className='flex flex-col gap-4'>
               {/* header - logo */}
               <div className='flex flex-col items-center text-center gap-6 mb-4'>
                 <a href='/' className='mx-auto block w-fit text-center'>
