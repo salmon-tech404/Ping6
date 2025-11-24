@@ -8,14 +8,14 @@ export const authService = {
     username: string,
     password: string,
     email: string,
-    firstname: string,
-    lastname: string
+    firstName: string,
+    lastName: string
   ) => {
     try {
       // gửi POST lên BE
       const res = await api.post(
         "/auth/signup",
-        { username, password, email, firstname, lastname },
+        { username, password, email, firstName, lastName },
         { withCredentials: true }
       );
       // nếu thành công trả return

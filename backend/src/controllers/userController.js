@@ -12,16 +12,6 @@ export const authMe = async (req, res) => {
     // Trả profile user
     return res.status(200).json({
       user,
-      //   : {
-      //     id: user._id,
-      //     username: user.username,
-      //     email: user.email,
-      //     displayName: user.displayName,
-      //     Phone: user.phoneNumber,
-      //     firstName: user.firstName,
-      //     lastName: user.lastName,
-      //     createdAt: user.createdAt,
-      //   },
     });
   } catch (error) {
     console.error("Error in authMe:", error);

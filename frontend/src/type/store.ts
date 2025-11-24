@@ -8,11 +8,11 @@ export interface AuthState {
   clearState: () => void;
 
   signUp: (
-    username: string,
-    password: string,
-    email: string,
     firstname: string,
-    lastname: string
+    lastname: string,
+    username: string,
+    email: string,
+    password: string
   ) => Promise<void>;
 
   signIn: (username: string, password: string) => Promise<void>;

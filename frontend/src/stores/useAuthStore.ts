@@ -28,11 +28,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         firstname,
         lastname
       );
-
+      console.log(res);
       toast.success("Đăng ký thành công! Chuyển qua trang đăng nhập.");
+      return res;
     } catch (error) {
       console.log(error);
       toast.error("Đăng ký không thành công!");
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -89,6 +91,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ loading: true });
       const { user, fetchMe } = get();
       const accessToken = await authService.refresh();
+      console.log(user, accessToken);
 
       set({ accessToken });
 

@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
-// import { Field, FieldSeparator } from "@/components/ui/field";
-// import { Button } from "@/components/ui/button";
 
 const signUpSchema = z.object({
   firstname: z.string().min(1, "Tên bắt buộc phải có"),
@@ -15,12 +13,6 @@ const signUpSchema = z.object({
   username: z.string().min(3, "Tên đăng nhập phải có ít nhất 3 ký tự"),
   email: z.email("Vui lòng nhập đúng định dạng email"),
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-  // password: z
-  //   .string()
-  //   .regex(
-  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^]).{8,}$/,
-  //     "Mật khẩu không hợp lệ"
-  //   ),
 });
 
 // Ý nghĩa: Hãy tạo ra kiểu dữ liệu "SignUpFormValue" dựa trên bộ dữ liệu yêu cầu "signUpSchema"
@@ -43,13 +35,18 @@ export function SignupForm({
 
   // onSubmit
   const onSubmit = async (data: SignUpFormValue) => {
-    const { firstname, lastname, username, email, password } = data;
-
-    // gọi backend xử lý signup
-    await signUp(username, password, email, firstname, lastname);
-
-    // chuyển hướng trang
-    navigate("/signin");
+    try {
+      await signUp(
+        data.username,
+        data.password,
+        data.email,
+        data.firstname,
+        data.lastname
+      );
+      navigate("/signin");
+    } catch (error) {
+      console.error("Signup failed", error);
+    }
   };
 
   return (
