@@ -10,6 +10,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: false,
 
+  // set accessToken
+
   // clear state
   clearState: () => {
     set({ accessToken: null, user: null, loading: false });
@@ -43,6 +45,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // gọi api
       const { accessToken } = await authService.signIn(username, password);
       set({ accessToken });
+      await get().fetchMe();
 
       toast.success("Chào mừng bạn quay lại với Ping6!");
     } catch (error) {
@@ -62,6 +65,42 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (error) {
       console.error(error);
       toast.error("Lỗi, xin hãy thử lại!");
+    }
+  },
+
+  // fetchMe
+  fetchMe: async () => {
+    try {
+      set({ loading: true });
+      const user = await authService.fetchMe();
+      set({ user });
+    } catch (error) {
+      console.log(error);
+      set({ user: null, accessToken: null });
+      toast.error("Lỗi xảy ra khi lấy dữ liệu người dùng. Hãy thử lại!");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // refresh
+  refresh: async () => {
+    try {
+      set({ loading: true });
+      const { user, fetchMe } = get();
+      const accessToken = await authService.refresh();
+
+      set({ accessToken });
+
+      if (!user) {
+        await fetchMe();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Phiên đăng nhập hết hạn!");
+      get().clearState();
+    } finally {
+      set({ loading: false });
     }
   },
 }));

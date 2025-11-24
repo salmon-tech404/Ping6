@@ -133,10 +133,10 @@ export const signOut = async (req, res) => {
   }
 };
 
-export const refereshToken = async (req, res) => {
+export const refreshToken = async (req, res) => {
   try {
     // lấy refreshToken từ cookie
-    const token = req.cookie?.refereshToken;
+    const token = req.cookies?.refereshToken;
     if (!token) {
       return res.status(401).json({ message: "Token không tồn tại!" });
     }
@@ -148,6 +148,20 @@ export const refereshToken = async (req, res) => {
         .status(403)
         .json({ message: "Token không hợp lệ hoặc hết hạn!" });
     }
+    // Kiểm tra xem hết hạn chưa
+    if (session.expiresAt < new Date()) {
+      return res.status(403).json({ message: "Token hết hạn!" });
+    }
+
+    // Tạo token mới
+    const accessToken = jwt.sign(
+      { userId: session.userId },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: ACCESS_TOKEN_TTL }
+    );
+
+    // Trả lại user
+    return res.status(200).json({ accessToken });
   } catch (error) {}
 };
 /* 
