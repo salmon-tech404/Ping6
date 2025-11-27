@@ -11,6 +11,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   loading: false,
 
   // set accessToken
+  setAccessToken: (accessToken) => {
+    set({ accessToken });
+  },
 
   // clear state
   clearState: () => {
@@ -46,7 +49,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ loading: true });
       // gọi api
       const { accessToken } = await authService.signIn(username, password);
-      set({ accessToken });
+      get().setAccessToken(accessToken);
       await get().fetchMe();
 
       toast.success("Chào mừng bạn quay lại với Ping6!");
@@ -89,11 +92,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   refresh: async () => {
     try {
       set({ loading: true });
-      const { user, fetchMe } = get();
+      const { user, fetchMe, setAccessToken } = get();
       const accessToken = await authService.refresh();
-      console.log(user, accessToken);
 
-      set({ accessToken });
+      setAccessToken(accessToken);
 
       if (!user) {
         await fetchMe();

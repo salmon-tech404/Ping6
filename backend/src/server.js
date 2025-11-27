@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./libs/db.js";
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
+import cookieParser from "cookie-parser";
 import { verifyAccessToken } from "./middlewares/authMiddleware.js";
 import cors from "cors";
 
@@ -14,7 +15,7 @@ const app = express();
 // Đặt CORS
 app.use(
   cors({
-    origin: process.env.CLENT_URL,
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -24,6 +25,8 @@ const SERVER_PORT = process.env.SERVER_PORT;
 
 // middlewares xử lý các request body có định dạng JSON
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 // Public routes
 app.use("/api/auth", authRoute);

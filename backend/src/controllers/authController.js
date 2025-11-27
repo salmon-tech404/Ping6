@@ -2,9 +2,10 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+// import cookieParser from "cookie-parser";
 import Session from "../models/Session.js";
 
-const ACCESS_TOKEN_TTL = "30m";
+const ACCESS_TOKEN_TTL = "30s";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 // SignUp AuthProcess
 export const signUp = async (req, res) => {
@@ -79,10 +80,8 @@ export const signIn = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET, //Ký token bằng secret key
       { expiresIn: ACCESS_TOKEN_TTL } //Thiết lập thời gian hết hạn
     );
-    console.log("✅ Access token: ", accessToken);
 
     const refreshToken = crypto.randomBytes(64).toString("hex");
-    console.log("✅ Refresh token: ", refreshToken);
 
     // Tạo session để lưu refresh token
     await Session.create({
@@ -92,10 +91,11 @@ export const signIn = async (req, res) => {
     });
 
     // Trả refresh token về trong cookies
+    const isProd = process.env.NODE_ENV === "production";
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       maxAge: REFRESH_TOKEN_TTL,
     });
 
@@ -162,7 +162,10 @@ export const refreshToken = async (req, res) => {
 
     // Trả lại user
     return res.status(200).json({ accessToken });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Lỗi khi gọi refreshToken", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
 };
 /* 
 

@@ -24,7 +24,7 @@ const sessionSchema = new mongoose.Schema(
 );
 
 // Tự động xóa khi hết hạn
-sessionSchema.index({ expiresAt: 1 }), { expireAfterSeconds: 0 };
+sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 //Tạo ra một Model tên “Session” dựa trên sessionSchema.
 const Session = mongoose.model("Session", sessionSchema);
