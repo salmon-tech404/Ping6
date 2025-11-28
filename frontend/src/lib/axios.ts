@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Tự động gọi refresh api khi access token hết hạn
+// Tự động gọi refresh api khi accessToken hết hạn
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -35,11 +35,10 @@ api.interceptors.response.use(
     ) {
       return Promise.reject(error);
     }
-    originalRequest._retryCount = originalRequest._retryCount || 0;
+    originalRequest._retry = originalRequest._retry || 0;
 
-    if (error.response?.status === 403 && originalRequest._retryCount < 4) {
-      originalRequest._retryCount += 1;
-      console.log("refresh", originalRequest._retryCount);
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
       try {
         const res = await api.post(
